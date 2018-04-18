@@ -5,11 +5,11 @@ typedef int DataType;
 
 struct ListNode
 {
-	ListNode* _next;//ºó¼ÌÖ¸Õë
-	ListNode* _prev;//Ç°ÇıÖ¸Õë
+	ListNode* _next;//åç»§æŒ‡é’ˆ
+	ListNode* _prev;//å‰é©±æŒ‡é’ˆ
 	DataType _data;
 
-	ListNode(DataType x)//³õÊ¼»¯
+	ListNode(DataType x)//åˆå§‹åŒ–
 		:_data(x)
 		, _next(NULL)
 		, _prev(NULL)
@@ -17,7 +17,7 @@ struct ListNode
 };
 class List
 {
-	typedef ListNode Node;//¶¨ÒåÎªË½ÓĞµÄ£¬Ö»ÓĞÀàÄÚ¿ÉÒÔ·ÃÎÊ£¬±ÜÃâÁËÃüÃû³åÍ»
+	typedef ListNode Node;//å®šä¹‰ä¸ºç§æœ‰çš„ï¼Œåªæœ‰ç±»å†…å¯ä»¥è®¿é—®ï¼Œé¿å…äº†å‘½åå†²çª
 public:
 	List()
 		:_head(new Node(DataType()))
@@ -25,31 +25,31 @@ public:
 		_head->_next = _head;
 		_head->_prev = _head;
 	}
-	void Sign(const List& l)//¸³Öµ¿½±´µÄº¯Êı
+	void Sign(const List& l)//èµ‹å€¼æ‹·è´çš„å‡½æ•°
 	{
 		_head->_next = _head;
 		_head->_prev = _head;
 		Node* cur = l._head->_next;
 		Node* Newcur = _head->_next;
 		Node* tmp = NULL;
-		while (cur != l._head)//ÖğÒ»¿½±´
-		{
-			if (Newcur->_next == _head)//Í·½Úµã²Ù×÷
+		while (cur != l._head)//é€ä¸€æ‹·è´
+		{ 
+			if (Newcur->_next == _head)//å¤´èŠ‚ç‚¹æ“ä½œ
 			{
 				tmp = new Node(DataType(cur->_data));
 				Link(Newcur, tmp);
 			}
-			else//·ÇÍ·½áµã²Ù×÷
+			else//éå¤´ç»“ç‚¹æ“ä½œ
 			{
-				while (Newcur->_next != _head)//ÕÒµ½ÒªÁ´½ÓµÄÎ»ÖÃ
+				while (Newcur->_next != _head)//æ‰¾åˆ°è¦é“¾æ¥çš„ä½ç½®
 					Newcur = Newcur->_next;
 				tmp = new Node(DataType(cur->_data));
-				Link(Newcur, tmp);//½øĞĞÁ´½Ó
+				Link(Newcur, tmp);//è¿›è¡Œé“¾æ¥
 			}
 			cur = cur->_next;
 		}
 	}
-	List(const List& l)//¿½±´¹¹Ôìº¯Êı
+	List(const List& l)//æ‹·è´æ„é€ å‡½æ•°
 		:_head(new Node(DataType()))
 	{
 		Sign(l);
@@ -59,7 +59,7 @@ public:
 		cout << "~List()" << endl;
 		clean();
 	}
-	void clean()//ÊÕÎ²£¬¶Ô¶¯Ì¬ÉêÇëµÄ½ÚµãµÄÊÍ·Å
+	void clean()//æ”¶å°¾ï¼Œå¯¹åŠ¨æ€ç”³è¯·çš„èŠ‚ç‚¹çš„é‡Šæ”¾
 	{
 		Node* cur = _head->_next;
 		Node* tmp = NULL;
@@ -73,14 +73,14 @@ public:
 	}
 	List& operator=(const List& l)
 	{
-		if (_head != l._head)//±ÜÃâ×Ô¼º¸ø×Ô¼º¸³Öµ
+		if (_head != l._head)//é¿å…è‡ªå·±ç»™è‡ªå·±èµ‹å€¼
 		{
-			clean();//Çå³ıÔ­ÓĞµÄÁ´±í½á¹¹
+			clean();//æ¸…é™¤åŸæœ‰çš„é“¾è¡¨ç»“æ„
 			Sign(l);
 		}
 		return *this;
 	}
-	void Link(Node* cur,Node* tmp)//½«Á½¸ö½ÚµãÁ´½ÓÆğÀ´(Ë«ÏòÁ´±íµÄÁ´½Ó)
+	void Link(Node* cur,Node* tmp)//å°†ä¸¤ä¸ªèŠ‚ç‚¹é“¾æ¥èµ·æ¥(åŒå‘é“¾è¡¨çš„é“¾æ¥)
 	{
 		tmp->_prev = cur;
 		tmp->_next = cur->_next;
@@ -90,11 +90,11 @@ public:
 	void PushBack(DataType x)
 	{
 		Node* cur = _head->_next;
-		while (cur->_next != _head)//ÕÒÎ²
+		while (cur->_next != _head)//æ‰¾å°¾
 			cur = cur->_next;
-		//Node* tmp = new Node(DataType(x));//·½·¨1
+		//Node* tmp = new Node(DataType(x));//æ–¹æ³•1
 		//Link(cur, tmp);
-		Insert(cur, x);//·½·¨2
+		Insert(cur, x);//æ–¹æ³•2
 	}
 	void show()
 	{
@@ -109,8 +109,8 @@ public:
 	void PushFront(DataType x)
 	{
 		Node* tmp = new Node(DataType(x));
-		//Link(_head, tmp);//·½·¨1
-		Insert(_head, x);//·½·¨2
+		//Link(_head, tmp);//æ–¹æ³•1
+		Insert(_head, x);//æ–¹æ³•2
 	}
 	void PopBack()
 	{
@@ -118,30 +118,30 @@ public:
 			return;
 		Node* cur = _head->_next;
 		Node* parent = _head;
-		while (cur->_next != _head)//ÕÒÎ²£¬²¢ÇÒ¼Ç×¡ÆäÇ°Çı£¬·½±ãÁ´½Ó
+		while (cur->_next != _head)//æ‰¾å°¾ï¼Œå¹¶ä¸”è®°ä½å…¶å‰é©±ï¼Œæ–¹ä¾¿é“¾æ¥
 		{
 			parent = cur;
 			cur = cur->_next;
 		}
-		//·½·¨1
+		//æ–¹æ³•1
 		/*parent->_next = cur->_next;
 		cur->_next->_prev = parent;
 		delete cur;
 		cur = NULL;*/
-		//·½·¨2
+		//æ–¹æ³•2
 		Erase(cur);
 	}
 	void PopFront()
 	{
 		if (_head->_next == _head)
 			return;
-		//·½·¨1
+		//æ–¹æ³•1
 		/*Node* cur = _head->_next;
 		_head->_next = cur->_next;
 		cur->_next->_prev = _head;
 		delete cur;
 		cur = NULL;*/
-		//·½·¨2
+		//æ–¹æ³•2
 		Erase(_head->_next);
 	}
 	Node* Find(DataType x)
@@ -160,11 +160,11 @@ public:
 	void Insert(Node* pos, DataType x)
 	{
 		Node* node = new Node(DataType(x));
-		if (pos == _head)//´¦ÀíÍ·½áµã
+		if (pos == _head)//å¤„ç†å¤´ç»“ç‚¹
 		{
 			Link(_head, node);
 		}
-		else//·ÇÍ·½áµã
+		else//éå¤´ç»“ç‚¹
 		{
 			Node* cur = _head->_next;
 			while (cur != _head)
@@ -210,25 +210,25 @@ void Test1()
 	l.PushBack(3);
 	l.PushBack(4);
 	l.PushBack(5);
-	printf("Î²²å>");
+	printf("å°¾æ’>");
 	l.show();
 	l.PushFront(0);
-	printf("Í·²å>");
+	printf("å¤´æ’>");
 	l.show();
-	printf("Î²É¾>");
+	printf("å°¾åˆ >");
 	l.PopBack();
 	l.show();
-	printf("Í·É¾>");
+	printf("å¤´åˆ >");
 	l.PopFront();
 	l.show();
-	cout << "²éÕÒ4: "<<l.Find(4)<<"->"<<l.Find(4)->_data << endl;
-	printf("L¿½±´¹¹Ôì>");
+	cout << "æŸ¥æ‰¾4: "<<l.Find(4)<<"->"<<l.Find(4)->_data << endl;
+	printf("Læ‹·è´æ„é€ >");
 	List L(l);
 	L.show();
 	L.PushBack(99);
-	printf("LÎ²²å99>");
+	printf("Lå°¾æ’99>");
 	L.show();
 	l = L;
-	printf("¸³Öµ£¬½«L¸³¸øl>");
+	printf("èµ‹å€¼ï¼Œå°†Lèµ‹ç»™l>");
 	l.show();
 }
