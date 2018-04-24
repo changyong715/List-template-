@@ -12,6 +12,37 @@ public:
 		,_finish(NULL)
 		,_endofstorage(NULL)
 	{}
+	Vector(const Vector& v)
+	{
+		if ((v._finish - v._first) > 0)
+		{
+			_first = new DataType[v._finish - v._first];
+			memcpy(_first, v._first, sizeof(DataType)*(v._finish - v._first));
+			_finish = _first +(v._finish - v._first);
+			_endofstorage = _first + (v._finish - v._first);
+		}
+		else
+			_first = _finish = _endofstorage = NULL;
+	}
+	Vector& operator=(const Vector& v)
+	{
+		if (_first != v._first)
+		{
+			int size = v._finish - v._first;
+			if (size > 0)
+			{
+				DataType* cur = new DataType[size];
+				delete[] _first;
+				memcpy(cur, v._first, sizeof(DataType)*size);
+				_first = cur;
+				_finish = _first + size;
+				_endofstorage = _first + size;
+			}
+			else
+				_first = _finish = _endofstorage = NULL;
+		}
+		return *this;
+	}
 	~Vector()
 	{
 		delete[] _first;
