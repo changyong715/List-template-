@@ -14,6 +14,24 @@ public:
 		, _finish(NULL)
 		, _endofstorge(NULL)
 	{}
+	~Vector()
+	{
+		delete[] _first;
+		_first = _finish = _endofstorge = NULL;
+	}
+	Vector(const Vector<T>& t)//Vector<T>才是类型，和以前注意区分
+	{
+		if (t._finish!=t._first)
+		{
+			size_t size = t._finish - t._first;
+			_first = new T[size];//给新对象分配空间
+			memcpy(_first, t._first, sizeof(T)*size);//拷贝数据
+			_finish = _first + size;
+			_endofstorge = _first + size;
+		}
+		else
+			_first = _finish = _endofstorge = NULL;
+	}
 	T& Back()
 	{
 		return *(_finish - 1);
@@ -22,70 +40,13 @@ public:
 	{
 		return *_first;
 	}
-	~Vector()
-	{
-		delete[] _first;
-		_first = _finish = _endofstorge = NULL;
-	}
-	void Expand(size_t n)
-	{
-		if (Empty())
-		{
-			_first = _finish = new T[3];
-			_endofstorge = _finish + 3;
-		}
-		else
-		{
-			size_t size = Size();
-			T* tmp = new T[n];
-			//memcpy(tmp, _first, Size() * sizeof(T));//当为string类型时，牵扯到深浅拷贝问题，摒弃memcpy这种做法
-			for (size_t i = 0; i < size; i++)
-			{
-				tmp[i] = _first[i];
-			}
-			delete[] _first;
-			_first = tmp;
-			_finish = _first + size;
-			_endofstorge = _first + n;
-		}
-	}
-	void PushBack(const T& data)
-	{
-		Insert(Size(), data);
-	}
-	void PopBack()
-	{
-		Erase(Size() - 1);
-	}
+	void Expand(size_t n);
+	void PushBack(const T& data);
+	void PopBack();
 	void Insert(size_t pos, const T& data);
-	void Erase(size_t pos)
-	{
-		assert(pos < Size());
-		T* start = _first + pos + 1;
-		while (start < _finish)
-		{
-			*(start-1) = *(start);
-			++start;
-		}
-		--_finish;
-	}
-	size_t Find(const T& data)
-	{
-		T* start = _first;
-		while (start != _finish)
-		{
-			if (*start == data)
-			{
-				return start - _first;
-			}
-			++start;
-		}
-		return -1;
-	}
-	const T&operator[](size_t pos) const
-	{
-		return _first[pos];
-	}
+	void Erase(size_t pos);
+	size_t Find(const T& data);
+	const T&operator[](size_t pos) const;
 	size_t Size()
 	{
 		return _finish - _first;
@@ -105,6 +66,30 @@ protected:
 };
 
 template<class T>
+void Vector<T>::Expand(size_t n)
+{
+	if (Empty())
+	{
+		_first = _finish = new T[3];
+		_endofstorge = _finish + 3;
+	}
+	else
+	{
+		size_t size = Size();
+		T* tmp = new T[n];
+		//memcpy(tmp, _first, Size() * sizeof(T));
+		for (size_t i = 0; i < size; i++)
+		{
+			tmp[i] = _first[i];
+		}
+		delete[] _first;
+		_first = tmp;
+		_finish = _first + size;
+		_endofstorge = _first + n;
+	}
+}
+
+template<class T>
 void Vector<T>::Insert(size_t pos, const T& data)
 {
 	if (Capacity() >= Size())
@@ -121,6 +106,51 @@ void Vector<T>::Insert(size_t pos, const T& data)
 	++_finish;
 }
 
+template<class T>
+void Vector<T>::PushBack(const T& data)
+{
+	Insert(Size(), data);
+}
+
+template<class T>
+void Vector<T>::PopBack()
+{
+	Erase(Size() - 1);
+}
+
+template<class T>
+void Vector<T>::Erase(size_t pos)
+{
+	assert(pos < Size());
+	T* start = _first + pos + 1;
+	while (start < _finish)
+	{
+		*(start - 1) = *(start);
+		++start;
+	}
+	--_finish;
+}
+
+template<class T>
+size_t Vector<T>::Find(const T& data)
+{
+	T* start = _first;
+	while (start != _finish)
+	{
+		if (*start == data)
+		{
+			return start - _first;
+		}
+		++start;
+	}
+	return -1;
+}
+
+template<class T>
+const T& Vector<T>::operator[](size_t pos)const
+{
+	return _first[pos];
+}
 void TestVector()
 {
 	Vector<int> v1;
