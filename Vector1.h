@@ -38,7 +38,7 @@ public:
 		{
 			size_t size = Size();
 			T* tmp = new T[n];
-			//memcpy(tmp, _first, Size() * sizeof(T));
+			//memcpy(tmp, _first, Size() * sizeof(T));//当为string类型时，牵扯到深浅拷贝问题，摒弃memcpy这种做法
 			for (size_t i = 0; i < size; i++)
 			{
 				tmp[i] = _first[i];
