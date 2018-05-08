@@ -77,7 +77,7 @@ void Vector<T>::Expand(size_t n)
 	{
 		size_t size = Size();
 		T* tmp = new T[n];
-		//memcpy(tmp, _first, Size() * sizeof(T));
+		//memcpy(tmp, _first, Size() * sizeof(T));//如果是string类型，memcpy牵扯到深浅拷贝问题
 		for (size_t i = 0; i < size; i++)
 		{
 			tmp[i] = _first[i];
@@ -89,7 +89,7 @@ void Vector<T>::Expand(size_t n)
 	}
 }
 
-template<class T>
+template<class T>//类外定义函数
 void Vector<T>::Insert(size_t pos, const T& data)
 {
 	if (Capacity() >= Size())
