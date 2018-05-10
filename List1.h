@@ -16,7 +16,7 @@ struct ListNode {
 	{}
 };
 
-template<class T>
+template<class T>//类型
 class List {
 	typedef ListNode<T> Node;
 public:
